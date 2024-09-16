@@ -4,13 +4,11 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: froshy_backend_dev
+    container_name: froshy_backend_prod
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/backend
     env_file:
-      - .env.development
+      - .env.production
     depends_on:
       - db
 
@@ -18,18 +16,15 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: froshy_frontend_dev
+    container_name: froshy_frontend_prod
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/frontend
-      - frontend_node_modules:/frontend/node_modules
     env_file:
-      - .env.development
+      - .env.production
 
   db:
     image: postgres:15
-    container_name: froshy_db_dev
+    container_name: froshy_db_prod
     environment:
       POSTGRES_USER: youruser
       POSTGRES_PASSWORD: yourpassword
@@ -37,8 +32,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_prod:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
-  frontend_node_modules:
+  postgres_data_prod:
