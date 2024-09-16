@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'cloudinary',
-    'cloudinary_storage',
     'corsheaders',
     'rest_framework',
     'froshy',
@@ -88,11 +87,11 @@ WSGI_APPLICATION = 'froshy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'frosy'),
-        'USER': os.getenv('POSTGRES_USER', 'youruser'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'yourpassword'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
