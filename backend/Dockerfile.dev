@@ -1,0 +1,22 @@
+FROM python:3.10-slim
+
+WORKDIR /backend
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    netcat-openbsd \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+COPY . .
+
+# Expose port 8000
+EXPOSE 8000
+
+# Use the entrypoint script
+ENTRYPOINT ["sh", "entrypoint.sh"]
