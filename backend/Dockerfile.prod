@@ -18,5 +18,8 @@ COPY . .
 # Expose port 8000
 EXPOSE 8000
 
+# Use the entrypoint script
+ENTRYPOINT ["sh", "entrypoint.sh"]
+
 # Use gunicorn for production
 CMD ["gunicorn", "froshy.wsgi:application", "--bind", "0.0.0.0:8000"]
