@@ -18,6 +18,10 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-outfit)"],
+        outfit: ["var(--font-outfit)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -60,7 +64,7 @@ const config: Config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
+          from: { height: "0 " },
           to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
