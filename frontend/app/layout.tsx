@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import Header from "@/app/_components/Header";
+import Footer from "@/app/_components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   title: "Family Calendar App",
@@ -16,46 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 w-full">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <Link
-              href="/"
-              className="text-2xl font-bold text-primary hover:text-primary/90 transition-colors"
-            >
-              Family Calendar
-            </Link>
-            <nav>
-              <ul className="flex space-x-6">
-                <li>
-                  <a
-                    href="#features"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/login"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    Login
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
+    <html lang="en" className={outfit.variable}>
+      <body className="min-h-screen flex flex-col font-sans">
+        <Header />
         <main className="flex-grow container mx-auto px-4 py-12">
           {children}
         </main>
-        <footer className="bg-muted py-12">
-          <div className="container mx-auto px-4 text-center text-muted-foreground">
-            <p>&copy; 2023 Family Calendar App. All rights reserved.</p>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );
