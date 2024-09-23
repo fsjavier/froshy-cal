@@ -5,7 +5,7 @@ export default function Features() {
   return (
     <section className="bg-card p-12 rounded-2xl shadow-xl max-w-5xl mx-auto">
       <h3 className="text-3xl font-semibold mb-12 text-center text-secondary">
-        Key Features
+        What you can do with Family Calendar
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <FeatureCard
