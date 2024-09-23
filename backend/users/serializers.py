@@ -77,3 +77,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             return data
         else:
             raise serializers.ValidationError('Invalid email or password.')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'first_name', 'last_name', 'avatar')

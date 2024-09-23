@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 import dj_database_url
 
@@ -149,15 +150,29 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://your-production-frontend-url.com",
+    "http://127.0.0.1:3000",
+    "https://froshy-frontend.onrender.com",
+]
+
+ALLOWED_HOSTS = [
+    "backend",
+    "localhost",
+    "127.0.0.1",
+    "froshy-frontend.onrender.com",
 ]
 
 # REST Framework Configuration
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
