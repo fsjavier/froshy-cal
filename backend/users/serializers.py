@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import CustomUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
 class UserRegisterSerializer(serializers.ModelSerializer):
     """
     Serializer for user registration.
@@ -32,7 +31,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['password'] != data['password2']:
-            raise serializers.ValidationError("Passwords do not match.")
+            raise serializers.ValidationError({"password": "Passwords do not match."})
         return data
 
     def create(self, validated_data):
@@ -64,7 +63,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         user = CustomUser.objects.filter(email=email).first()
         if user and user.check_password(password):
             if not user.is_active:
-                raise serializers.ValidationError('User account is disabled.')
+                raise serializers.ValidationError({"non_field_errors": "User account is disabled."})
 
             # Proceed to generate token with super
             data = super().validate({'username': user.email, 'password': password})
@@ -76,8 +75,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             return data
         else:
-            raise serializers.ValidationError('Invalid email or password.')
-
+            raise serializers.ValidationError({"non_field_errors": "Invalid email or password."})
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
