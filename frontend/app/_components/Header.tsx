@@ -3,6 +3,13 @@ import { Logo } from "./Logo";
 import { Navigation } from "./Navigation";
 import { UserMenu } from "./UserMenu";
 
+interface User {
+  email: string;
+  avatar?: string;
+  first_name: string;
+  last_name: string;
+}
+
 export default async function Header() {
   const session = await auth();
 
@@ -12,7 +19,7 @@ export default async function Header() {
         <Logo />
         <div className="flex items-center space-x-6">
           <Navigation isLoggedIn={!!session?.user} />
-          {session?.user && <UserMenu user={session.user} />}
+          {session?.user && <UserMenu user={session.user as User} />}
         </div>
       </div>
     </header>

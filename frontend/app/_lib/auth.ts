@@ -1,9 +1,12 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserAction, loginAction } from "./actions";
+import { getUserAction } from "./actions";
+import { api } from "./api";
+import { AxiosError } from "axios";
 
 export const {
   auth,
+  signIn,
   handlers: { GET, POST },
 } = NextAuth({
   providers: [
@@ -14,14 +17,35 @@ export const {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
+        try {
+          const res = await api.post(
+            "/users/token/",
+            JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = res.data;
+
+          if (res.status === 200 && data) {
+            return { ...data.user, accessToken: data.access };
+          }
+        } catch (error: unknown) {
+          console.error("Login error:", error);
+          if (
+            error instanceof AxiosError &&
+            error.response &&
+            error.response.data
+          ) {
+            throw new Error(error.response.data.detail || "Login failed");
+          }
+          throw new Error("Login failed");
         }
-        const data = await loginAction(
-          credentials?.email,
-          credentials?.password
-        );
-        return data;
       },
     }),
   ],

@@ -18,7 +18,7 @@ import LogoutButton from "./LogoutButton";
 
 type UserMenuProps = {
   user: {
-    avatar: string;
+    avatar?: string;
     first_name: string;
     last_name: string;
     email: string;
@@ -50,7 +50,7 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar} alt={user.first_name} />
+            <AvatarImage src={user.avatar ?? ""} alt={user.first_name} />
             <AvatarFallback>
               {user.first_name[0]}
               {user.last_name[0]}

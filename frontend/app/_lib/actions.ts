@@ -1,5 +1,6 @@
 "use server";
 
+import { signIn } from "@/app/_lib/auth";
 import { api } from "./api";
 import { AxiosError } from "axios";
 
@@ -34,28 +35,11 @@ export async function registerAction(data: RegistrationData) {
 }
 
 export async function loginAction(email: string, password: string) {
-  try {
-    const res = await api.post(
-      "/users/token/",
-      JSON.stringify({
-        email,
-        password,
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = res.data;
-
-    if (res.status === 200 && data) {
-      return { ...data.user, accessToken: data.access };
-    }
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  await signIn("credentials", {
+    email,
+    password,
+    callbackUrl: "/dashboard",
+  });
 }
 
 export async function getUserAction(token: string) {
@@ -69,7 +53,7 @@ export async function getUserAction(token: string) {
     const userData = user.data;
     return userData;
   } catch (error) {
-    console.error(error);
+    console.error("Get user error:", error);
     throw error;
   }
 }
