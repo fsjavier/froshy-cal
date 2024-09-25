@@ -5,7 +5,7 @@ import { Input } from "@/app/_components/ui/Input";
 import { Button } from "@/app/_components/ui/Button";
 import { Label } from "@/app/_components/ui/Label";
 import { Loader2 } from "lucide-react";
-import { loginAction } from "../_lib/actions";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface FormData {
@@ -33,11 +33,26 @@ export default function LoginForm() {
     setIsLoading(true);
 
     try {
-      await loginAction(formData.email, formData.password);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Sign-in error:", error);
-      setError("An unexpected error occurred. Please try again.");
+      const res = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+        callbackUrl: "/dashboard",
+      });
+
+      if (res?.error) {
+        throw new Error(res.error);
+      }
+      if (res?.url) {
+        router.push(res.url);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "CredentialsSignin") {
+        setError("Invalid credentials");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
       setIsLoading(false);
     }
   };

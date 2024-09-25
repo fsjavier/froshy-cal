@@ -42,9 +42,12 @@ export function RegisterForm() {
         last_name: lastName,
       });
       router.push("/login"); // Redirect to login upon successful registration
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Registration failed.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Registration failed.");
+      } else {
+        setError("Registration failed.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -142,7 +145,7 @@ export function RegisterForm() {
           disabled={isLoading}
         />
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <Button type="submit" disabled={isLoading} className="w-full">
         {isLoading ? "Registering..." : "Register"}
       </Button>

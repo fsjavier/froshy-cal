@@ -7,8 +7,8 @@ interface User {
   id?: number;
   email: string;
   avatar?: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 
 export default async function DashboardPage() {
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
     <Suspense fallback={<LoadingOverlay />}>
       <div>
         <h1>Dashboard</h1>
-        <p>Welcome, {user.first_name}!</p>
+        <p>Welcome, {user.firstName}!</p>
       </div>
     </Suspense>
   );
