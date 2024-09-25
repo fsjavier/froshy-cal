@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import CustomUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     """
     Serializer for user registration.
@@ -45,7 +46,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    Serializer for token obtain.
+    Serializer for obtaining JWT tokens along with user details.
     """
     @classmethod
     def get_token(cls, user):
@@ -57,25 +58,15 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
-
-        user = CustomUser.objects.filter(email=email).first()
-        if user and user.check_password(password):
-            if not user.is_active:
-                raise serializers.ValidationError({"non_field_errors": "User account is disabled."})
-
-            # Proceed to generate token with super
-            data = super().validate({'username': user.email, 'password': password})
-
-            data['email'] = user.email
-            data['first_name'] = user.first_name
-            data['last_name'] = user.last_name
-            data['avatar'] = user.avatar.url if user.avatar else None
-
-            return data
-        else:
-            raise serializers.ValidationError({"non_field_errors": "Invalid email or password."})
+        data = super().validate(attrs)
+        user = self.user
+        data['user'] = {
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'avatar': user.avatar.url if user.avatar else None
+        }
+        return data
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
