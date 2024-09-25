@@ -1,6 +1,5 @@
 "use server";
 
-import { signIn } from "@/app/_lib/auth";
 import { api } from "./api";
 import { AxiosError } from "axios";
 
@@ -26,20 +25,11 @@ export async function registerAction(data: RegistrationData) {
 
     throw new Error("Unexpected response from server");
   } catch (error: unknown) {
-    console.error("Registration error:", error);
     if (error instanceof AxiosError && error.response && error.response.data) {
       throw new Error(error.response.data.detail || "Registration failed");
     }
     throw new Error("Registration failed");
   }
-}
-
-export async function loginAction(email: string, password: string) {
-  await signIn("credentials", {
-    email,
-    password,
-    callbackUrl: "/dashboard",
-  });
 }
 
 export async function getUserAction(token: string) {
