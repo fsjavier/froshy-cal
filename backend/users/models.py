@@ -4,6 +4,9 @@ from cloudinary.models import CloudinaryField
 
 
 class CustomUserManager(BaseUserManager):
+    """
+    Custom user manager for the CustomUser model.
+    """
     def create_user(self, email, password=None, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -33,6 +36,9 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """
+    Custom user model for the CustomUser model.
+    """
     email = models.EmailField('email address', unique=True)
     avatar = CloudinaryField('image', blank=True, null=True)
     first_name = models.CharField(max_length=30, blank=True)
