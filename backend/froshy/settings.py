@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_spectacular',
+
     'froshy',
-    'users'
+    'users',
+    'calendars',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

@@ -21,8 +21,12 @@ class CalendarViewSet(viewsets.ModelViewSet):
     filterset_fields = ["name"]
     ordering_fields = ["name", "created_at"]
     search_fields = ["name", "description"]
+    queryset = Calendar.objects.all()
 
     def get_queryset(self):
+        # Return an empty queryset if accessing for schema generation
+        if getattr(self, "swagger_fake_view", False):
+            return Calendar.objects.none()
         return Calendar.objects.filter(members=self.request.user)
 
     def perform_create(self, serializer):
@@ -79,8 +83,12 @@ class EventViewSet(viewsets.ModelViewSet):
     filterset_fields = ["calendar", "start_time", "end_time"]
     ordering_fields = ["start_time", "end_time", "created_at"]
     search_fields = ["title", "description"]
+    queryset = Event.objects.all()
 
     def get_queryset(self):
+        # Return an empty queryset if accessing for schema generation
+        if getattr(self, "swagger_fake_view", False):
+            return Event.objects.none()
         return Event.objects.filter(calendar__members=self.request.user)
 
     def perform_create(self, serializer):
